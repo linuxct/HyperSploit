@@ -84,8 +84,8 @@ public static class Program {
     /// <param name="device">Device data</param>
     private static async Task Bypass(AdbClient client, DeviceData device) {
         AnsiConsole.MarkupLine("[green]Open Mi Unlock Status and attempt to bind account[/]");
-        await client.ExecuteRemoteCommandAsync("svc wifi disable", device);
-        await client.ExecuteRemoteCommandAsync("svc data enable", device);
+        await client.ExecuteRemoteCommandAsync("svc wifi enable", device);
+        // await client.ExecuteRemoteCommandAsync("svc data enable", device);
         await client.ExecuteRemoteCommandAsync("am start -a android.settings.APPLICATION_DEVELOPMENT_SETTINGS", device);
 
         var receiver = new EventOutputReceiver();
@@ -95,7 +95,7 @@ public static class Program {
             var match = Regex.Match(line, "args: (.*)");
             if (match.Success) {
                 AnsiConsole.MarkupLine("[green]Disabling mobile internet, taking over![/]");
-                client.ExecuteRemoteCommand("svc data disable", device);
+                client.ExecuteRemoteCommand("svc wifi disable", device);
                 arguments = Decrypt(match.Groups[1].Value);
                 return;
             }
@@ -109,7 +109,7 @@ public static class Program {
         
         await client.ExecuteRemoteCommandAsync("logcat -T 1 *:S CloudDeviceStatus:V", device, receiver);
         if (arguments == null || headers == null) {
-            await client.ExecuteRemoteCommandAsync("svc data enable", device);
+            await client.ExecuteRemoteCommandAsync("svc wifi enable", device);
             AnsiConsole.MarkupLine("[red]Failed to decrypt arguments and headers![/]");
             AnsiConsole.MarkupLine("[yellow]This probably means you have a patched Settings app.[/]");
             if (AnsiConsole.Confirm("[yellow]Try downgrading to an unpatched version?[/]", false))
@@ -155,7 +155,7 @@ public static class Program {
             _ => $"[red]Error {json.Code}: {json.Description}[/]"
         });
         
-        await client.ExecuteRemoteCommandAsync("svc data enable", device);
+        await client.ExecuteRemoteCommandAsync("svc wifi enable", device);
     }
 
     /// <summary>
