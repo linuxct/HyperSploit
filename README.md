@@ -50,6 +50,8 @@ Note: If you're on MacOS or on Linux, install ADB and add it to `PATH`.
    **A:** This tool only bypasses HyperOS restrictions, you still have to comply with MIUI's.
 2) **Q:** I see `Couldn't verify, wait a minute or two and try again` on my device. Why? \
    **A:** This is normal as we intentionally cut it off to forge a binding request ourselves.
+3) **Q:** Will this work in tablets? \
+   **A:** Soon TM
 
 ## Licence
 This project is licenced under [Mozilla Public License Version 2.0](https://github.com/TheAirBlow/HyperSploit/blob/main/LICENCE)
